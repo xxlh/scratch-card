@@ -53,15 +53,16 @@ scratchCanvas.init()
 :-: | :-: | :-: | - | -
 bg | String | null | 有效的图片url | 若bg的值为有效的图片url，则会在蒙层下自动生成背景
 mask | String | #ccc | 有效的颜色字符串或图片url | 蒙层的填充内容
-pureMask | Boolean | true | - | 是否为纯色蒙层，当使用图片作为蒙层时，必须显式地将该属性设置为false
 width | Number | null | 正整数 | 生成的canvas标签的width属性值，不设置该值时canvas的width将会是容器元素的实际宽度
 height | Number | null | 正整数 | 生成的canvas标签的height属性值，不设置该值时canvas的height将会是容器元素的实际高度
 brushSize | Number | 25 | 正整数 | 笔刷(半径)大小
+maxPercent | Number | 100 | 正整数 | 激活百分比 到该值就显示结果
+scratchArea | Obj | startX,startY 起点;areaWith:区域宽度；areaHeight：区域长度 | 正数 | 设置该区域内可以“刮除”
 brushPress | Number | 1 | 0~1之间任意数字 | 笔刷压强
 onCreated | Function | null | - | 实例初始化完毕被插入到dom节点后的回调函数
 onScratch | Function | null | - | "刮除"蒙层时的回调函数，接收一个参数，该参数值为已"刮除"面积与总面积的百分比(对于一个像素掉，"已刮除"的定义是该像素点透明度小于0.25，而不是该像素点必须被mousedown/mousemove等事件处理过)
+onEnd | Function | null | - | "刮除"蒙层结束后 回调函数，接收一个参数，该参数值为已"刮除"面积与总面积的百分比(对于一个像素掉，"已刮除"的定义是该像素点透明度小于0.25，而不是该像素点必须被mousedown/mousemove等事件处理过)
 throttleWait | Number | 0 | 正数 | 节流函数的间隔时间参数，如果在使用过程中发现明显卡顿(刮除不连续属于正常现象)可以尝试调高该参数值
-
 ## 实例API
 
 API名 | 描述
