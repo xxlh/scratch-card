@@ -3,7 +3,7 @@ import ScratchCanvas from '../../src'
 
 window.onload = function () {
   const pureMaskScratchCanvas = new ScratchCanvas(document.querySelector('.pure-mask-scratch-canvas-container'), {
-    mask: '#999',
+    mask: 'red',
     onScratch (percent) {
       document.querySelector('.pure-mask-scratch-canvas-container .percent-tips').textContent = `已经刮开了${percent}%`
     }
@@ -12,7 +12,6 @@ window.onload = function () {
 
   const imageMaskScratchCanvas = new ScratchCanvas(document.querySelector('.image-mask-scratch-canvas-container'), {
     mask: require('./bg.png'),
-    pureMask: false,
     onScratch (percent) {
       document.querySelector('.image-mask-scratch-canvas-container .percent-tips').textContent = `已经刮开了${percent}%`
     },
@@ -22,13 +21,23 @@ window.onload = function () {
 
   const bgScratchCanvas = new ScratchCanvas(document.querySelector('.bg-scratch-canvas-container'), {
     mask: require('./mask.png'),
-    pureMask: false,
     bg: require('./bg.png'),
     brushSize: 80,
     brushPress: 0.025,
     throttleWait: 0
   })
   bgScratchCanvas.init()
+
+  // const maxPercentMaskScratchCanvas = new ScratchCanvas(document.querySelector('.maxPerent-scratch-canvas-container'), {
+  //   mask: require('./bg.png'),
+  //   maxPerent: 40,
+  //   onScratch (percent) {
+  //     document.querySelector('.maxPerent-scratch-canvas-container .percent-tips').textContent = `已经刮开了${percent}%`
+  //   },
+
+  //   throttleWait: 0
+  // })
+  // maxPercentMaskScratchCanvas.init()
 
   document.querySelectorAll('.btn-toggle-code').forEach(btn => {
     btn.addEventListener('click', function () {
