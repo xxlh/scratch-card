@@ -1,10 +1,10 @@
 {
-  "name": "scratch-card",
+  "name": "scratch-me",
   "version": "1.0.0",
   "description": "Append a scratchable card in html.",
-  "main": "./dist/scratch-card.cjs.js",
-  "module": "./dist/scratch-card.es.js",
-  "umd": "./dist/scratch-card.min.js",
+  "main": "./dist/scratch-me.cjs.js",
+  "module": "./dist/scratch-me.es.js",
+  "umd": "./dist/scratch-me.min.js",
   "umd:name": "ScratchCard",
   "husky": {
     "hooks": {

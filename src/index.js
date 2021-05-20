@@ -21,7 +21,7 @@ const defaultConfig = {
   onEnd: null
 }
 
-function ScratchCard (container, config) {
+function ScratchMe (container, config) {
   const _config = Object.assign({}, defaultConfig, config)
   this.container = container
   this.bg = _config.bg
@@ -51,9 +51,10 @@ function ScratchCard (container, config) {
       _config.onEnd(percent)
     }
     : null
+  this.debug = _config.debug
 }
 
-ScratchCard.prototype = {
+ScratchMe.prototype = {
   init () {
     this.bgCanvas && this.container.removeChild(this.bgCanvas)
     this.bgCanvas = null
@@ -142,9 +143,11 @@ ScratchCard.prototype = {
           this.scratchArea.areaHeight /= this.scale
 
           this.maskCtx.drawImage(image, 0, 0, this.width, this.height)
-          // 可视化可刮区域
-          this.maskCtx.fillStyle = 'red'
-          this.maskCtx.fillRect(this.scratchArea.startX, this.scratchArea.startY, this.scratchArea.areaWidth, this.scratchArea.areaHeight)
+          if (this.debug) {
+            // 可视化可刮区域
+            this.maskCtx.fillStyle = 'red'
+            this.maskCtx.fillRect(this.scratchArea.startX, this.scratchArea.startY, this.scratchArea.areaWidth, this.scratchArea.areaHeight)
+          }
           this.maskCtx.globalCompositeOperation = 'destination-out'
           resolve()
         })
@@ -184,7 +187,6 @@ ScratchCard.prototype = {
       const scratchCoords = this.getScratchCoords(e)
       const isScratchable = scratchCoords.x > this.scratchArea.startX + this.brushSize && scratchCoords.x < this.scratchArea.startX + this.scratchArea.areaWidth - this.brushSize &&
       scratchCoords.y > this.scratchArea.startY + this.brushSize && scratchCoords.y < this.scratchArea.startY + this.scratchArea.areaHeight - this.brushSize
-      console.log(this.scratchArea)
       if (isScratchable) this.scratch(scratchCoords.x, scratchCoords.y)
       else this.storePixelsData(scratchCoords.x, scratchCoords.y)
     }, this.throttleWait), false)
@@ -192,8 +194,8 @@ ScratchCard.prototype = {
       if (!isScratching) return false
       e.preventDefault()
       const scratchCoords = this.getScratchCoords(e)
-      const isScratchable = scratchCoords.x > this.scratchArea.startX && scratchCoords.x < this.scratchArea.startX + this.scratchArea.areaWidth &&
-      scratchCoords.y > this.scratchArea.startY && scratchCoords.y < this.scratchArea.startY + this.scratchArea.areaHeight
+      const isScratchable = scratchCoords.x > this.scratchArea.startX + this.brushSize && scratchCoords.x < this.scratchArea.startX + this.scratchArea.areaWidth - this.brushSize &&
+      scratchCoords.y > this.scratchArea.startY + this.brushSize && scratchCoords.y < this.scratchArea.startY + this.scratchArea.areaHeight - this.brushSize
       if (isScratchable) this.scratch(scratchCoords.x, scratchCoords.y)
     }, this.throttleWait), false)
     document.addEventListener(endScratchEventName, throttle(e => {
@@ -261,4 +263,4 @@ ScratchCard.prototype = {
   }
 }
 
-export default ScratchCard
+export default ScratchMe

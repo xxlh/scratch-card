@@ -1,4 +1,4 @@
-# ScratchCanvas
+# ScratchMe
 
 一个基于canvas实现“刮刮卡”功能的js库。
 
@@ -7,18 +7,18 @@
 使用npm:
 
 ```bash
-$ npm install scratch-canvas
+$ npm install scratch-me
 ```
 
 直接引入&lt;script&gt;:
 
 ```html
-<script src="//cdn.jsdelivr.net/npm/scratch-canvas@0.0.1/dist/scratch-canvas.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/scratch-me@0.0.1/dist/scratch-me.min.js"></script>
 ```
 
 ## 示例
 
-[查看demo页面](https://vilfredli.github.io/scratch-canvas)
+[查看demo页面](https://xxlh.github.io/scratch-me)
 
 ## 快速开始
 
@@ -31,11 +31,11 @@ $ npm install scratch-canvas
 在js中引入ScratchCanvas并将容器元素传递给构造函数后调用实例的init方法即可：
 
 ```js
-import ScratchCanvas from 'scratch-canvas'
+import ScratchMe from 'scratch-me'
 
 const containerElm = document.querySelector('.container')
-const scratchCanvas = new ScratchCanvas(containerElm)
-scratchCanvas.init()
+const scratchMe = new ScratchMe(containerElm)
+scratchMe.init()
 ```
 
 ## 配置
@@ -43,8 +43,8 @@ scratchCanvas.init()
 在创建实例时通过向第二个参数传入一个对象进行配置：
 
 ```js
-const scratchCanvas = new ScratchCanvas(elm, {/* 配置项... */})
-scratchCanvas.init()
+const scratchMe = new ScratchMe(elm, {/* 配置项... */})
+scratchMe.init()
 ```
 
 可用配置项：
@@ -57,7 +57,7 @@ width | Number | null | 正整数 | 生成的canvas标签的width属性值，不
 height | Number | null | 正整数 | 生成的canvas标签的height属性值，不设置该值时canvas的height将会是容器元素的实际高度
 brushSize | Number | 25 | 正整数 | 笔刷(半径)大小
 maxPercent | Number | 100 | 正整数 | 激活百分比 到该值就显示结果
-scratchArea | Obj | startX,startY 起点;areaWith:区域宽度；areaHeight：区域长度 | 正数 | 设置该区域内可以“刮除”
+scratchArea | Obj | {startX:0, startY:0, areaWidth:0, areaHeight:0} | - | 设置该区域内可以“刮除”。startX,startY 起点;areaWidth:区域宽度；areaHeight：区域长度
 brushPress | Number | 1 | 0~1之间任意数字 | 笔刷压强
 onCreated | Function | null | - | 实例初始化完毕被插入到dom节点后的回调函数
 onScratch | Function | null | - | "刮除"蒙层时的回调函数，接收一个参数，该参数值为已"刮除"面积与总面积的百分比(对于一个像素掉，"已刮除"的定义是该像素点透明度小于0.25，而不是该像素点必须被mousedown/mousemove等事件处理过)

@@ -1,11 +1,17 @@
 /*
- * scratch-card v1.0.0
+ * scratch-me v1.0.0
  * (c) 2021 Little Linghuan & Esone
  * Released under the GPL license
  * ieexx.com
  */
 
-import throttle from 'lodash.throttle';
+'use strict';
+
+var throttle = require('lodash.throttle');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var throttle__default = /*#__PURE__*/_interopDefaultLegacy(throttle);
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -7958,7 +7964,7 @@ var defaultConfig = {
   scratchArea: {
     startX: 0,
     startY: 0,
-    areaWith: 0,
+    areaWidth: 0,
     areaHeight: 0
   },
   width: null,
@@ -7972,7 +7978,7 @@ var defaultConfig = {
   onEnd: null
 };
 
-function ScratchCard(container, config) {
+function ScratchMe(container, config) {
   var _this = this;
 
   var _config = Object.assign({}, defaultConfig, config);
@@ -8000,9 +8006,10 @@ function ScratchCard(container, config) {
   this.onEnd = typeof _config.onEnd === 'function' ? function (percent) {
     _config.onEnd(percent);
   } : null;
+  this.debug = _config.debug;
 }
 
-ScratchCard.prototype = {
+ScratchMe.prototype = {
   init: function init() {
     var _this2 = this;
 
@@ -8028,7 +8035,7 @@ ScratchCard.prototype = {
       _this2.bgCanvas && _this2.container.appendChild(_this2.bgCanvas);
       _this2.maskCanvas && _this2.container.appendChild(_this2.maskCanvas);
       _this2.onCreated && _this2.onCreated();
-      _this2.scratchArea.areaWith = _this2.scratchArea.areaWith || _this2.width;
+      _this2.scratchArea.areaWidth = _this2.scratchArea.areaWidth || _this2.width;
       _this2.scratchArea.areaHeight = _this2.scratchArea.areaHeight || _this2.height;
     })["catch"](function (err) {
       throw err;
@@ -8100,13 +8107,17 @@ ScratchCard.prototype = {
           _this4.scale = image.width / _this4.width;
           _this4.scratchArea.startX /= _this4.scale;
           _this4.scratchArea.startY /= _this4.scale;
-          _this4.scratchArea.areaWith /= _this4.scale;
+          _this4.scratchArea.areaWidth /= _this4.scale;
           _this4.scratchArea.areaHeight /= _this4.scale;
 
-          _this4.maskCtx.drawImage(image, 0, 0, _this4.width, _this4.height); // 可视化可刮区域
-          // this.maskCtx.fillStyle = "red"
-          // this.maskCtx.fillRect(this.scratchArea.startX, this.scratchArea.startY, this.scratchArea.areaWith,this.scratchArea.areaHeight)
+          _this4.maskCtx.drawImage(image, 0, 0, _this4.width, _this4.height);
 
+          if (_this4.debug) {
+            // 可视化可刮区域
+            _this4.maskCtx.fillStyle = 'red';
+
+            _this4.maskCtx.fillRect(_this4.scratchArea.startX, _this4.scratchArea.startY, _this4.scratchArea.areaWidth, _this4.scratchArea.areaHeight);
+          }
 
           _this4.maskCtx.globalCompositeOperation = 'destination-out';
           resolve();
@@ -8144,24 +8155,24 @@ ScratchCard.prototype = {
     var endScratchEventName = isMobile ? 'touchend' : 'mouseup';
     var isScratching = false;
     var isComplete = false;
-    this.maskCanvas.addEventListener(startScratchEventName, throttle(function (e) {
+    this.maskCanvas.addEventListener(startScratchEventName, throttle__default['default'](function (e) {
       isScratching = true;
 
       var scratchCoords = _this5.getScratchCoords(e);
 
-      var isScratchable = scratchCoords.x > _this5.scratchArea.startX + _this5.brushSize && scratchCoords.x < _this5.scratchArea.startX + _this5.scratchArea.areaWith - _this5.brushSize && scratchCoords.y > _this5.scratchArea.startY + _this5.brushSize && scratchCoords.y < _this5.scratchArea.startY + _this5.scratchArea.areaHeight - _this5.brushSize;
+      var isScratchable = scratchCoords.x > _this5.scratchArea.startX + _this5.brushSize && scratchCoords.x < _this5.scratchArea.startX + _this5.scratchArea.areaWidth - _this5.brushSize && scratchCoords.y > _this5.scratchArea.startY + _this5.brushSize && scratchCoords.y < _this5.scratchArea.startY + _this5.scratchArea.areaHeight - _this5.brushSize;
       if (isScratchable) _this5.scratch(scratchCoords.x, scratchCoords.y);else _this5.storePixelsData(scratchCoords.x, scratchCoords.y);
     }, this.throttleWait), false);
-    this.maskCanvas.addEventListener(scratchingEventName, throttle(function (e) {
+    this.maskCanvas.addEventListener(scratchingEventName, throttle__default['default'](function (e) {
       if (!isScratching) return false;
       e.preventDefault();
 
       var scratchCoords = _this5.getScratchCoords(e);
 
-      var isScratchable = scratchCoords.x > _this5.scratchArea.startX && scratchCoords.x < _this5.scratchArea.startX + _this5.scratchArea.areaWith && scratchCoords.y > _this5.scratchArea.startY && scratchCoords.y < _this5.scratchArea.startY + _this5.scratchArea.areaHeight;
+      var isScratchable = scratchCoords.x > _this5.scratchArea.startX + _this5.brushSize && scratchCoords.x < _this5.scratchArea.startX + _this5.scratchArea.areaWidth - _this5.brushSize && scratchCoords.y > _this5.scratchArea.startY + _this5.brushSize && scratchCoords.y < _this5.scratchArea.startY + _this5.scratchArea.areaHeight - _this5.brushSize;
       if (isScratchable) _this5.scratch(scratchCoords.x, scratchCoords.y);
     }, this.throttleWait), false);
-    document.addEventListener(endScratchEventName, throttle(function (e) {
+    document.addEventListener(endScratchEventName, throttle__default['default'](function (e) {
       if (isComplete) return; // 计算已经刮掉的面积
 
       if (_this5.scratchedPercent >= _this5.maxPercent) {
@@ -8194,7 +8205,7 @@ ScratchCard.prototype = {
     this.maskCtx.fillStyle = scratchBrush;
     this.maskCtx.arc(x, y, this.brushSize, 0, Math.PI * 2);
     this.maskCtx.fill();
-    var ratioScratchable = this.scratchArea.areaWith * this.scratchArea.areaHeight / (this.width * this.height);
+    var ratioScratchable = this.scratchArea.areaWidth * this.scratchArea.areaHeight / (this.width * this.height);
     this.scratchedPercent = (this.getScratchedPercent(x, y) / ratioScratchable).toFixed(2);
     this.onScratch && this.onScratch(x, y);
   },
@@ -8219,4 +8230,4 @@ ScratchCard.prototype = {
   }
 };
 
-export default ScratchCard;
+module.exports = ScratchMe;

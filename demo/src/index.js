@@ -1,8 +1,8 @@
 import './index.css'
-import ScratchCard from '../../src'
+import ScratchMe from '../../src'
 
 window.onload = function () {
-  const pureMaskScratchCard = new ScratchCard(document.querySelector('.pure-mask-scratch-card-container'), {
+  const pureMaskScratchCard = new ScratchMe(document.querySelector('.pure-mask-scratch-card-container'), {
     mask: 'red',
     onScratch (percent) {
       document.querySelector('.pure-mask-scratch-card-container .percent-tips').textContent = `已经刮开了${percent}%`
@@ -10,7 +10,7 @@ window.onload = function () {
   })
   pureMaskScratchCard.init()
 
-  const imageMaskScratchCard = new ScratchCard(document.querySelector('.image-mask-scratch-card-container'), {
+  const imageMaskScratchCard = new ScratchMe(document.querySelector('.image-mask-scratch-card-container'), {
     mask: require('./bg.png'),
     onScratch (percent) {
       document.querySelector('.image-mask-scratch-card-container .percent-tips').textContent = `已经刮开了${percent}%`
@@ -19,14 +19,14 @@ window.onload = function () {
   })
   imageMaskScratchCard.init()
 
-  const bgScratchCard = new ScratchCard(document.querySelector('.bg-scratch-card-container'), {
+  const bgScratchCard = new ScratchMe(document.querySelector('.bg-scratch-card-container'), {
     mask: require('./mask.png'),
     bg: require('./bg.png'),
     throttleWait: 0
   })
   bgScratchCard.init()
 
-  const maxPercentMaskScratchCard = new ScratchCard(document.querySelector('.maxPercent-scratch-card-container'), {
+  const maxPercentMaskScratchCard = new ScratchMe(document.querySelector('.maxPercent-scratch-card-container'), {
     mask: require('./bg.png'),
     maxPercent: 10,
     brushSize: 80,
@@ -37,7 +37,7 @@ window.onload = function () {
   })
   maxPercentMaskScratchCard.init()
 
-  const areaMaskScratchCard = new ScratchCard(document.querySelector('.area-scratch-card-container'), {
+  const areaMaskScratchCard = new ScratchMe(document.querySelector('.area-scratch-card-container'), {
     mask: require('./bg.png'),
     scratchArea: {
       startX: 350,
@@ -45,8 +45,9 @@ window.onload = function () {
       areaWidth: 100,
       areaHeight: 100
     },
-    brushSize: 80,
-    brushPress: 0.25,
+    brushSize: 20,
+    debug: true,
+    // brushPress: 0.25,
     onScratch (percent) {
       document.querySelector('.area-scratch-card-container .percent-tips').textContent = `已经刮开了${percent}%`
     }
