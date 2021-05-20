@@ -13,7 +13,7 @@ $ npm install scratch-me
 直接引入&lt;script&gt;:
 
 ```html
-<script src="//cdn.jsdelivr.net/npm/scratch-me@0.0.1/dist/scratch-me.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/scratch-me@1.0.0/dist/scratch-me.min.js"></script>
 ```
 
 ## 示例
