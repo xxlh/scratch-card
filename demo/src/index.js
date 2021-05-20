@@ -1,43 +1,57 @@
 import './index.css'
-import ScratchCanvas from '../../src'
+import ScratchCard from '../../src'
 
 window.onload = function () {
-  const pureMaskScratchCanvas = new ScratchCanvas(document.querySelector('.pure-mask-scratch-canvas-container'), {
+  const pureMaskScratchCard = new ScratchCard(document.querySelector('.pure-mask-scratch-card-container'), {
     mask: 'red',
     onScratch (percent) {
-      document.querySelector('.pure-mask-scratch-canvas-container .percent-tips').textContent = `已经刮开了${percent}%`
+      document.querySelector('.pure-mask-scratch-card-container .percent-tips').textContent = `已经刮开了${percent}%`
     }
   })
-  pureMaskScratchCanvas.init()
+  pureMaskScratchCard.init()
 
-  const imageMaskScratchCanvas = new ScratchCanvas(document.querySelector('.image-mask-scratch-canvas-container'), {
+  const imageMaskScratchCard = new ScratchCard(document.querySelector('.image-mask-scratch-card-container'), {
     mask: require('./bg.png'),
     onScratch (percent) {
-      document.querySelector('.image-mask-scratch-canvas-container .percent-tips').textContent = `已经刮开了${percent}%`
+      document.querySelector('.image-mask-scratch-card-container .percent-tips').textContent = `已经刮开了${percent}%`
     },
     throttleWait: 0
   })
-  imageMaskScratchCanvas.init()
+  imageMaskScratchCard.init()
 
-  const bgScratchCanvas = new ScratchCanvas(document.querySelector('.bg-scratch-canvas-container'), {
+  const bgScratchCard = new ScratchCard(document.querySelector('.bg-scratch-card-container'), {
     mask: require('./mask.png'),
     bg: require('./bg.png'),
-    brushSize: 80,
-    brushPress: 0.025,
     throttleWait: 0
   })
-  bgScratchCanvas.init()
+  bgScratchCard.init()
 
-  // const maxPercentMaskScratchCanvas = new ScratchCanvas(document.querySelector('.maxPerent-scratch-canvas-container'), {
-  //   mask: require('./bg.png'),
-  //   maxPerent: 40,
-  //   onScratch (percent) {
-  //     document.querySelector('.maxPerent-scratch-canvas-container .percent-tips').textContent = `已经刮开了${percent}%`
-  //   },
+  const maxPercentMaskScratchCard = new ScratchCard(document.querySelector('.maxPercent-scratch-card-container'), {
+    mask: require('./bg.png'),
+    maxPercent: 10,
+    brushSize: 80,
+    brushPress: 0.25,
+    onScratch (percent) {
+      document.querySelector('.maxPercent-scratch-card-container .percent-tips').textContent = `已经刮开了${percent}%`
+    }
+  })
+  maxPercentMaskScratchCard.init()
 
-  //   throttleWait: 0
-  // })
-  // maxPercentMaskScratchCanvas.init()
+  const areaMaskScratchCard = new ScratchCard(document.querySelector('.area-scratch-card-container'), {
+    mask: require('./bg.png'),
+    scratchArea: {
+      startX: 350,
+      startY: 150,
+      areaWidth: 100,
+      areaHeight: 100
+    },
+    brushSize: 80,
+    brushPress: 0.25,
+    onScratch (percent) {
+      document.querySelector('.area-scratch-card-container .percent-tips').textContent = `已经刮开了${percent}%`
+    }
+  })
+  areaMaskScratchCard.init()
 
   document.querySelectorAll('.btn-toggle-code').forEach(btn => {
     btn.addEventListener('click', function () {

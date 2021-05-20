@@ -7,7 +7,7 @@ const defaultConfig = {
   scratchArea: {
     startX: 0,
     startY: 0,
-    areaWith: 0,
+    areaWidth: 0,
     areaHeight: 0
   },
   width: null,
@@ -73,7 +73,7 @@ ScratchCard.prototype = {
         this.bgCanvas && this.container.appendChild(this.bgCanvas)
         this.maskCanvas && this.container.appendChild(this.maskCanvas)
         this.onCreated && this.onCreated()
-        this.scratchArea.areaWith = this.scratchArea.areaWith || this.width
+        this.scratchArea.areaWidth = this.scratchArea.areaWidth || this.width
         this.scratchArea.areaHeight = this.scratchArea.areaHeight || this.height
       })
       .catch(err => {
@@ -138,13 +138,13 @@ ScratchCard.prototype = {
           this.scale = image.width / this.width
           this.scratchArea.startX /= this.scale
           this.scratchArea.startY /= this.scale
-          this.scratchArea.areaWith /= this.scale
+          this.scratchArea.areaWidth /= this.scale
           this.scratchArea.areaHeight /= this.scale
 
           this.maskCtx.drawImage(image, 0, 0, this.width, this.height)
           // 可视化可刮区域
-          // this.maskCtx.fillStyle = "red"
-          // this.maskCtx.fillRect(this.scratchArea.startX, this.scratchArea.startY, this.scratchArea.areaWith,this.scratchArea.areaHeight)
+          this.maskCtx.fillStyle = 'red'
+          this.maskCtx.fillRect(this.scratchArea.startX, this.scratchArea.startY, this.scratchArea.areaWidth, this.scratchArea.areaHeight)
           this.maskCtx.globalCompositeOperation = 'destination-out'
           resolve()
         })
@@ -182,8 +182,9 @@ ScratchCard.prototype = {
     this.maskCanvas.addEventListener(startScratchEventName, throttle(e => {
       isScratching = true
       const scratchCoords = this.getScratchCoords(e)
-      const isScratchable = scratchCoords.x > this.scratchArea.startX + this.brushSize && scratchCoords.x < this.scratchArea.startX + this.scratchArea.areaWith - this.brushSize &&
+      const isScratchable = scratchCoords.x > this.scratchArea.startX + this.brushSize && scratchCoords.x < this.scratchArea.startX + this.scratchArea.areaWidth - this.brushSize &&
       scratchCoords.y > this.scratchArea.startY + this.brushSize && scratchCoords.y < this.scratchArea.startY + this.scratchArea.areaHeight - this.brushSize
+      console.log(this.scratchArea)
       if (isScratchable) this.scratch(scratchCoords.x, scratchCoords.y)
       else this.storePixelsData(scratchCoords.x, scratchCoords.y)
     }, this.throttleWait), false)
@@ -191,7 +192,7 @@ ScratchCard.prototype = {
       if (!isScratching) return false
       e.preventDefault()
       const scratchCoords = this.getScratchCoords(e)
-      const isScratchable = scratchCoords.x > this.scratchArea.startX && scratchCoords.x < this.scratchArea.startX + this.scratchArea.areaWith &&
+      const isScratchable = scratchCoords.x > this.scratchArea.startX && scratchCoords.x < this.scratchArea.startX + this.scratchArea.areaWidth &&
       scratchCoords.y > this.scratchArea.startY && scratchCoords.y < this.scratchArea.startY + this.scratchArea.areaHeight
       if (isScratchable) this.scratch(scratchCoords.x, scratchCoords.y)
     }, this.throttleWait), false)
@@ -226,7 +227,7 @@ ScratchCard.prototype = {
     this.maskCtx.arc(x, y, this.brushSize, 0, Math.PI * 2)
     this.maskCtx.fill()
 
-    const ratioScratchable = (this.scratchArea.areaWith * this.scratchArea.areaHeight) / (this.width * this.height)
+    const ratioScratchable = (this.scratchArea.areaWidth * this.scratchArea.areaHeight) / (this.width * this.height)
     this.scratchedPercent = (this.getScratchedPercent(x, y) / ratioScratchable).toFixed(2)
     this.onScratch && this.onScratch(x, y)
   },
